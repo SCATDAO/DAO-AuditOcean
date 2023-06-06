@@ -54,7 +54,7 @@ An audit round is a synchronous four-stage process and its purpose is to conduct
   \label{fig:mi_imagen}
 \end{figure}
 
-When an audit round is created the administrator can start its stages synchronously by executing an endpoint on the backed with the desired parameters. The \emph{service-audits} pod receives the http request and sends an event to the \emph{Bull-MQ} queuing system which controls when a stage finishes according to the assigned time.
+When an audit round is created the administrator can start its stages synchronously by executing an endpoint on the backend with the desired parameters. The \emph{service-audits} pod receives the http request and sends an event to the \emph{Bull-MQ} queuing system which controls when a stage finishes according to the assigned time.
 
 \begin{figure}[ht]
   \centering
@@ -175,7 +175,7 @@ However, it is possible to assign a simple time-locked plutus script that allows
   \label{fig:mi_imagen}
 \end{figure}
 
-Another form of index auditability is public code repositories like Github or distributed storage systems like IFPS.
+Another form of index auditability is public code repositories like Github or distributed storage systems like IPFS.
 \subsection { Assignment of auditors }
    
 The assignment of auditors to the projects to be audited can be a point of corruption if it is done centrally or by one person. For this reason, the best option is a decentralized assignment algorithm. There is not much complexity in the logic required for an equal assignment for all auditors. The main requirements are randomness and uniform distribution of the probability of being chosen as an auditor of a project. The Fisher-Yates algorithm ensures that each element has an equal probability of being placed in any position of the resulting permutation. This is useful since it can shuffle a finite list of indices. For example, A = [0, 50] where A is the list of indices from auditor 0 to auditor 50. Each index represent a specific auditor and they are ordered consecutively [0,1,2,3,4 .. 50]. When the algorithm is applied to the list the positions of the indices will change randomly. If AuditOcean needs 12 auditors for an audit round the first 12 indices from the shuffled list will be selected.\\
@@ -251,7 +251,7 @@ This Fisher-Yates haskell version can be used as a reference to create a plutus 
 \subsection { Report Minting }
 
 The auditor report and its respective review are two different but necessarily related resources they make up a complete audit report. To ensure the immutability of its content it is necessary mint them as non-fungible assets. This can be done automatically from the backend integration at the end of the \emph{Auditing} stage. 
-The latest version of the .json documents sent by the auditor and the reviewer will be hashed to subsequently mint 3 copies, 1 NFT will be sent to the wallet provided by the auditor, another will be sent to the reviewer's wallet and another will be stored in a wallet of the DAO. They will be stored in IFPS and Github.
+The latest version of the .json documents sent by the auditor and the reviewer will be hashed to subsequently mint 3 copies, 1 NFT will be sent to the wallet provided by the auditor, another will be sent to the reviewer's wallet and another will be stored in a wallet of the DAO. They will be stored in IPFS and Github.
 
 This mechanism can be implemented in the smart contract for its operation during the \emph{Auditing} stage. For example, supplying the contract with the list of wallets that have authorization to mint and some status variables to indicate if they have already minted their report or not. However, this will be the subject of investigation for future versions of the smart contract.
 \end{document}
