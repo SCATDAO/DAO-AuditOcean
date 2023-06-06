@@ -6,9 +6,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "node-histogram": "node index.js && python3 histogram.py",
-    "node-matrix": "node index.js && python3 prob.py",
-    "haskell-matrix": "ghc -package aeson fisher.hs && ./fisher && python3 prob.py"
+    "node-matrix": "node index.js && python3 matrix.py",
+    "haskell-matrix": "ghc -package aeson fisher.hs && ./fisher && python3 matrix.py"
   },
   "keywords": [],
   "author": "",
