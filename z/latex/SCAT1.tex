@@ -37,7 +37,7 @@
 }
 
 \section{Introduction}
-By using a decentralized audit system it is possible to eliminate potential corruption points that may exist in a centralized audit system such as the choice of auditors or the interest of third parties to influence the outcome of an audit report. AuditOcean is a blockchain community space designed for research and project auditing. The community decides through its voting power which projects should be audited. Users can add the projects they want through the public repository https://dyortool.io/. Once the user adds a project a dedicated page is created where users can select it as a project to be audited in the active audit round. The main product is to make fundamental analysis reports (advanced research questions outline) and soon formal verification reports and technical testing reports to cardano smart contracts.
+By using a decentralized audit system it is possible to eliminate potential corruption points that may exist in a centralized audit system such as the choice of auditors or the interest of third parties to influence the outcome of an audit report. AuditOcean is a blockchain community space designed for research and project auditing. The community decides through its voting power which projects should be audited. Users can add the projects they want through the public repository https://dyortool.io/. Once the user adds a project a dedicated page is created where users can select it as a project to be audited in the active audit round. The main mission of the platform is to make fundamental analysis reports following a scheme of advanced research questions and technical vulnerability analysis reports for plutus cardano contracts.
 
 \section{ Transitional Features }
 The transitional features are all functional requirements necessary to perform an audit round that could be replaced with decentralized alternatives using a smart contract on the Cardano network. Governance, audit round administration, assignment of auditors and report minting are the most important. 
@@ -54,7 +54,7 @@ An audit round is a synchronous four-stage process and its purpose is to conduct
   \label{fig:mi_imagen}
 \end{figure}
 
-When an audit round is created the administrator can start its stages synchronously by executing an endpoint on the backed with the desired parameters. The \emph{service-audits} pod receives the http request and sends an event to the \emph{Bull-MQ} queuing system which controls when a stage finishes according to the assigned time.
+When an audit round is created the administrator can start its stages synchronously by executing an endpoint on the backend with the desired parameters. The \emph{service-audits} pod receives the http request and sends an event to the \emph{Bull-MQ} queuing system which controls when a stage finishes according to the assigned time.
 
 \begin{figure}[ht]
   \centering
@@ -63,18 +63,18 @@ When an audit round is created the administrator can start its stages synchronou
   \label{fig:mi_imagen}
 \end{figure}
 
-In this centralized configuration the administrator and the queuing system control the states of the active audit round. The states of an audit round are the \emph{Pending}, \emph{Selection}, \emph{Governance}, and \emph{Auditing} stages. Each of these states transitions synchronously, that is, a stage cannot start if the previous stage has not finished, the transitions are sequential not parallel.
+In this centralized configuration the administrator and the queuing system control the states of the active audit round. The states of an audit round are the \emph{Pending}, \emph{Selection}, \emph{Governance}, and \emph{Auditing} stages. A stage cannot start if the previous stage has not finished, the transitions are sequential not parallel.
 
 In computer science the concepts of state and machine of states are common. A state machine it is a mathematical model to describe the behavior of the different states of a system and their transitions based on conditions, events or triggers. Each state in a state machine represents a specific configuration of the system. It has an initial state that can transition to other states following the rules of the system. Each state within a state machine can execute actions, change variables and produce outputs according to the conditions specifically established for it. There are two types of state machines, the deterministic ones that for a given combination of state and input there is only one possible transition to the next state. And the non-deterministic ones that there can be multiple possible transitions from a given state for a particular input.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.9\textwidth]{machine.png}
-  \caption{Round states}
-  \label{fig:Round states}
+  \caption{Audit round states}
+  \label{fig:Audit round states}
 \end{figure}
 
-Figure 3 shows the deterministic state machine concepts applied to the stages of an audit round. The initial stage is a passive state that does not execute any logic necessary for the audit round. In order for the initial state to transition to the first state a trigger is needed. In this case, the DAO operational wallet interacts with a smart contract endpoint. For example, \emph{startRound} is the endpoint designed to start an audit round and receives the necessary parameters so that a round can start. Contracts in Cardano's EUTXO model need at least one initial transaction to trigger their design logic and configure its initial state.
+Figure 3 shows the deterministic state machine concepts applied to the stages of an audit round. The initial stage is a passive state that does not execute any logic necessary for the audit round in order for the initial state to transition to the first state a trigger is needed. Contracts in Cardano's EUTXO model need at least one initial transaction to trigger their design logic and configure its initial state. In this case the DAO operational wallet interacts with a smart contract endpoint called \emph{startRound}  designed to start an audit round that receives the necessary parameters so that a round can start. 
 \\
 \\
 \begin{tabular}{lr}
@@ -110,7 +110,7 @@ Figure 3 shows the deterministic state machine concepts applied to the stages of
 Once the DAO wallet has interacted with the \emph{startRound} endpoint the contract will transition to the first state by assigning the new parameters to the contract variables. The duration parameters represent the time measured in Slots on the blockchain. The Plutus.Contract module has functions for dealing with time such as waiting for a certain amount of Slots to pass before proceeding with the execution of the contract. It is commonly used when implementing time-based behaviors or waiting for a specific deadline to be reached. It is possible to create a time-based trigger to transition to the second state and also to transition to the initial state without the need for external intervention managed by the time Slots of the blockchain.
 
 \subsection { Governance } 
-During the \emph{Selection} stage AuditOcean users select the project they want by pressing a button on the UI. The list of projects as the final result of this selection stage is submitted to a poll in an external governance platform called the summon platform.
+During the \emph{Selection} stage AuditOcean users select the project they want by pressing a button on the UI. The list of projects as the final result of this selection stage is submitted to a poll in an external governance platform called the \emph{summon platform}.
 
 \begin{figure}[ht]
   \centering
@@ -147,10 +147,9 @@ Once the governance stage is finished a snapshot is taken at the exact moment or
 
 This configuration for the governance system guarantees speed, minimum computing time and the ability to validate millions of indexes using a simple condition:
 
-\emph{ indexParam } $\in$ \emph{ projectIndex } $\Rightarrow$ \text{True}. 
- where \emph{ projectIndex } is the set of project indexes listed by the community. 
+\emph{indexParam} $\in$ \emph{projectIndex} $\Rightarrow$ \text{True}.  Where \emph{indexParam} is the parameter sent by the user and \emph{projectIndex} is the set of project indexes listed by the community. 
 
-$\emph{ indexParam } \leq \emph{ projectIndex }$  $\Rightarrow$ \text{True}. where \emph{ projectIndex } is the total number of project indexes listed by the community.
+Or $\emph{indexParam} \leq \emph{projectIndex}$  $\Rightarrow$ \text{True}. Where \emph{indexParam} is the parameter sent by the user and \emph{projectIndex} is the total number of project indexes listed by the community.
 
 \begin{figure}[ht]
   \centering
@@ -160,7 +159,7 @@ $\emph{ indexParam } \leq \emph{ projectIndex }$  $\Rightarrow$ \text{True}. whe
   \label{fig:mi_imagen}
 \end{figure}
 
-The parameter \emph{ projectIndex } can be added by the DAO operational wallet when calling the \emph{startRound} endpoint. This parameter within the smart contract corresponds to a positive integer number. For example, in case there are 742 projects listed by the community, \emph{ projectIndex } will be 742. In the initial state of the contract this variable value is 0. At the end of the governance stage this variable will also be 0.
+The parameter \emph{ projectIndex } can be added by the DAO operational wallet when calling the \emph{startRound} endpoint. This parameter within the smart contract corresponds to a positive integer number. For example, in case there are 742 projects listed by the community \emph{ projectIndex } will be 742. In the initial state of the contract this variable value is 0. At the end of the governance stage this variable will also be 0.
 
 In the hypothetical case that the contract itself was designed to store the project indices in the form of assets or NFTs to later be consulted in the governance stage, this would add more logic to the contract and therefore computation time. For this reason it is a disadvantage to use the contract as a form of storage.
 
@@ -178,7 +177,7 @@ However, it is possible to assign a simple time-locked plutus script that allows
 Another form of index auditability is public code repositories like Github or distributed storage systems like IFPS.
 \subsection { Assignment of auditors }
    
-The assignment of auditors to the projects to be audited can be a point of corruption if it is done centrally or by one person. For this reason, the best option is a decentralized assignment algorithm. There is not much complexity in the logic required for an equal assignment for all auditors. The main requirements are randomness and uniform distribution of the probability of being chosen as an auditor of a project. The Fisher-Yates algorithm ensures that each element has an equal probability of being placed in any position of the resulting permutation. This is useful since it can shuffle a finite list of indices. For example, A = [0, 50] where A is the list of indices from auditor 0 to auditor 50. Each index represent a specific auditor and they are ordered consecutively [0,1,2,3,4 .. 50]. When the algorithm is applied to the list the positions of the indices will change randomly. If AuditOcean needs 12 auditors for an audit round the first 12 indices from the shuffled list will be selected.\\
+Assigning auditors to auditable projects can be a point of low auditability if done centrally on private servers. For that reason the best option is a decentralized assignment algorithm. There is not much complexity in the logic required for an equal assignment for all auditors. The main requirements are randomness and uniform distribution of the probability of being chosen as an auditor of a project. The fisher-yates algorithm is a great candidate because it ensures that each element has an equal probability of being placed in any position of the resulting permutation. This is useful since it can shuffle a finite list of indices. For example, A = [0, 50] where A is the list of indices from auditor 0 to auditor 50. Each index represent a specific auditor and they are ordered consecutively [0,1,2,3,4 .. 50]. When the algorithm is applied to the list the positions of the indices will change randomly. If AuditOcean needs 12 auditors for an audit round the first 12 indices from the shuffled list will be selected.\\
 
 \emph {auditorPool } = [0,1,2,3,4 .. 50] \\
 \emph { auditorPoolShuffled } = [30, 13, 10, 19, 21, 45, 23, 47, 31, 50,  4, 28, .. 34]\\
@@ -246,12 +245,12 @@ shuffle xs = do
 \end{tcolorbox}
 
 
-This Fisher-Yates haskell version can be used as a reference to create a plutus implementation. The code inside a plutus contract is deterministic it is necessary to use an oracle that generates a random number for the \emph { random } variable.
+This Fisher-Yates haskell version can be used as a reference to create a plutus implementation. The code inside a plutus contract is deterministic it is necessary to use an oracle that generates a random number for the \emph {random} variable or use a pseudo random number generator (PRNG) using the hash of the last block generated by the blockchain as a seed of entropy.
 
 \subsection { Report Minting }
 
 The auditor report and its respective review are two different but necessarily related resources they make up a complete audit report. To ensure the immutability of its content it is necessary mint them as non-fungible assets. This can be done automatically from the backend integration at the end of the \emph{Auditing} stage. 
-The latest version of the .json documents sent by the auditor and the reviewer will be hashed to subsequently mint 3 copies, 1 NFT will be sent to the wallet provided by the auditor, another will be sent to the reviewer's wallet and another will be stored in a wallet of the DAO. They will be stored in IFPS and Github.
+The latest version of the .json documents sent by the auditor and the reviewer will be hashed to subsequently mint 3 copies. 1 NFT will be sent to the wallet provided by the auditor. Another will be sent to the reviewer's wallet and another will be stored in a wallet of the DAO. They will be stored in IFPS and Github.
 
-This mechanism can be implemented in the smart contract for its operation during the \emph{Auditing} stage. For example, supplying the contract with the list of wallets that have authorization to mint and some status variables to indicate if they have already minted their report or not. However, this will be the subject of investigation for future versions of the smart contract.
+This mechanism can be implemented in the smart contract for its operation during the \emph{Auditing} stage. For example, supplying the contract with the list of wallets that have authorization to mint and some status variables to indicate if they have already minted their report or not. Or use identity tokens as a form of authorization to mint. However this will be the subject of investigation for future versions of the smart contract.
 \end{document}
